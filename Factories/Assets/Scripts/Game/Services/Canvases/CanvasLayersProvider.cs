@@ -16,6 +16,7 @@ namespace Game.Services.Canvases
         {
             _canvasFactory = canvasFactory;
             _canvases  = new Dictionary<CanvasLayer, Canvas>();
+            return;
             for (var i = 0; i < _layersOrder.Count; i++)
             {
                 var layer = _layersOrder[i];

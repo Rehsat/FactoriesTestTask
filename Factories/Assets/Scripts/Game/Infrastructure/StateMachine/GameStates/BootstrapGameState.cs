@@ -9,19 +9,13 @@ namespace Game.Infrastructure.StateMachine.GameStates
     public class BootstrapGameState : IGameState
     {
         private readonly ISceneLoader _sceneLoader;
-        private readonly ICanvasLayersProvider _canvasLayersProvider;
-        private readonly IPrefabsTransformContainer _prefabsTransformContainer;
         private GameStateMachine _stateMachine;
 
         private const string MAIN_SCENE_NAME = "MainScene";
 
-        public BootstrapGameState(ISceneLoader sceneLoader,
-            ICanvasLayersProvider canvasLayersProvider,
-            IPrefabsTransformContainer prefabsTransformContainer)
+        public BootstrapGameState(ISceneLoader sceneLoader)
         {
             _sceneLoader = sceneLoader;
-            _canvasLayersProvider = canvasLayersProvider;
-            _prefabsTransformContainer = prefabsTransformContainer;
         }
         public void SetStateMachine(GameStateMachine stateMachine)
         {
@@ -29,9 +23,6 @@ namespace Game.Infrastructure.StateMachine.GameStates
         }
         public void Enter()
         {
-            var scrollCanvas = _canvasLayersProvider.GetCanvasByLayer(CanvasLayer.FiguresScroll);
-            _prefabsTransformContainer.AddTransform(Prefab.FiguresScroll, scrollCanvas.transform);
-            
             _sceneLoader.LoadScene(MAIN_SCENE_NAME, OnEnterMainScene);
         }
 
