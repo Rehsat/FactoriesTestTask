@@ -1,6 +1,8 @@
 using Game.Core.Player;
 using Game.Core.Player.Movement;
 using Game.Infrastructure.AssetsManagement;
+using Game.Infrastructure.Configs;
+using Game.Services.PlayerResources;
 using UnityEngine;
 using Zenject;
 

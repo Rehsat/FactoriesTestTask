@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace Game.Core.Player.Movement
 {
-    public class PlayerToPointMovement : MonoBehaviour, IMovementObserver
+    public class PlayerToPointMovement : MonoBehaviour, IMovementObserver, IStopableMovement
     {
         [SerializeField] private NavMeshAgent _navMeshAgent;
 

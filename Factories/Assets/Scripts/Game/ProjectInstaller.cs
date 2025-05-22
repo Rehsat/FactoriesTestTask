@@ -1,5 +1,6 @@
 using Game.Core.Player;
 using Game.Core.Player.Movement;
+using Game.Core.PlayerResourcess.ResourcFactories;
 using Game.Factories;
 using Game.Infrastructure;
 using Game.Infrastructure.AssetsManagement;
@@ -9,6 +10,7 @@ using Game.Infrastructure.StateMachine.GameStates;
 using Game.Services.Cameras;
 using Game.Services.Canvases;
 using Game.Services.Input;
+using Game.Services.PlayerResources;
 using Game.Services.RaycastService;
 using Infrastructure.StateMachine;
 using UnityEngine;
@@ -34,6 +36,7 @@ namespace Game
         private void InstallConfig(IGameConfig gameConfig)
         {
             Container.Bind<IPrefabsProvider>().FromInstance(gameConfig.PrefabsProvider).AsSingle();
+            Container.Bind<ISpriteByResourceTypeContainer>().FromInstance(gameConfig.SpriteByResourceTypeContainer).AsSingle();
         }
         
         private void InstallInfrastructure()
@@ -48,13 +51,18 @@ namespace Game
         {
             Container.Bind<IFactory<PlayerRoot>>().To<PlayerFactory>().FromNew().AsSingle();
             Container.Bind<IFactory<Canvas>>().To<CanvasFactory>().FromNew().AsSingle();
+            Container.Bind<IFactory<PlayerResource, IResourceCollectBuilding>>()
+                .To<ResourceViewFactory>().FromNew().AsSingle();
+            Container.Bind<IFactory<PlayerResource, ResourceCollectBuildingPresenter>>()
+                .To<CollectBuildingPresenterFactory>().FromNew().AsSingle();
         }
 
         private void InstallServices()
         {
             Container.Bind<ICanvasLayersProvider>().To<CanvasLayersProvider>().FromInstance(canvasLayersProvider).AsSingle();
             Container.Bind<ICameraService>().To<CameraService>().FromInstance(_cameraService).AsSingle();
-            
+
+            Container.Bind<IPlayerResourcesService>().To<PlayerResourcesService>().FromNew().AsSingle();
             Container.Bind<IRaycastService>().To<RaycastService>().FromNew().AsSingle();
             Container.Bind<IInputService>().To<InputService>().FromNew().AsSingle();
         }

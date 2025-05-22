@@ -2,5 +2,6 @@
 {
     public interface IPlayerAnimator
     {
+        public void PlayAnimation(PlayerAnimation animation);
     }
 }

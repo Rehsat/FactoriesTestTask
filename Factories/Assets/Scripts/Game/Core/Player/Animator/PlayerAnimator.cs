@@ -11,7 +11,8 @@ namespace Game.Core.Player.Animations
 
         private CompositeDisposable _compositeDisposable;
         
-        private static readonly int IsRunning = Animator.StringToHash("is-running");
+        private static readonly int IsRunningKey = Animator.StringToHash("is-running");
+        private static readonly int HappyDanceKey = Animator.StringToHash("happy-dance");
 
         public void Construct(IMovementObserver movementObserver)
         {
@@ -23,12 +24,18 @@ namespace Game.Core.Player.Animations
 
         public void SetIsRunning(bool isRunning)
         {
-            _animator.SetBool(IsRunning, isRunning);
+            _animator.SetBool(IsRunningKey, isRunning);
         }
 
         private void OnDestroy()
         {
             _compositeDisposable?.Dispose();
+        }
+
+        public void PlayAnimation(PlayerAnimation playerAnimation)
+        {
+            if(playerAnimation == PlayerAnimation.None) return;
+            _animator.SetTrigger(HappyDanceKey); // можно будет добавить поиск хеша по словарю при необходимости
         }
     }
 }

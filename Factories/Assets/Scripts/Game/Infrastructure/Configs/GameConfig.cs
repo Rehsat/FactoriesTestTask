@@ -11,7 +11,9 @@ namespace Game.Infrastructure.Configs
     [CreateAssetMenu(menuName = "GameConfigs/GameConfig", fileName = "GameConfig")]
     public class GameConfig : ScriptableObject, IGameConfig
     {
-        [SerializeField] private PrefabsProviderConfig prefabsProviderConfig;
-        public IPrefabsProvider PrefabsProvider => prefabsProviderConfig;
+        [SerializeField] private PrefabsProviderConfig _prefabsProviderConfig;
+        [SerializeField] private SpriteByResourceTypeContainer _spriteByResourceTypeContainer;
+        public IPrefabsProvider PrefabsProvider => _prefabsProviderConfig;
+        public ISpriteByResourceTypeContainer SpriteByResourceTypeContainer => _spriteByResourceTypeContainer;
     }
 }
