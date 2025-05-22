@@ -9,16 +9,20 @@ namespace Game.Core.PlayerResourcess.ResourcFactories
     {
         private readonly PlayerResourceModel _resourceModel;
         private readonly IResourceCollectBuilding _resourceView;
+        private readonly IPlayerResourcesService _resourcesService;
         private readonly CompositeDisposable _compositeDisposable;
         private readonly ReactiveProperty<bool> _isEnabled;
 
         private CompositeDisposable _collectDisposable;
         public ResourceCollectBuildingPresenter(
             PlayerResourceModel resourceModel
-            ,IResourceCollectBuilding resourceView)
+            ,IResourceCollectBuilding resourceView
+            ,IPlayerResourcesService resourcesService)
         {
             _resourceModel = resourceModel;
             _resourceView = resourceView;
+            _resourcesService = resourcesService;
+            
             _compositeDisposable = new CompositeDisposable();
             _isEnabled = new ReactiveProperty<bool>();
             
@@ -33,9 +37,15 @@ namespace Game.Core.PlayerResourcess.ResourcFactories
                 .AddTo(_compositeDisposable);
 
             _resourceView.SetSprite(_resourceModel.Sprite);
+            _resourceView.SetTitle(_resourceModel.ResourceType.ToString());
+            
             _resourceModel.ResourceCount
                 .Subscribe(newResourceValue =>
                     _resourceView.SetResourceViewCount(newResourceValue))
+                .AddTo(_compositeDisposable);
+
+            _resourceView.OnCollectResource
+                .SubscribeWithSkip(CollectResources)
                 .AddTo(_compositeDisposable);
         }
 
@@ -62,6 +72,13 @@ namespace Game.Core.PlayerResourcess.ResourcFactories
                     _resourceModel.ChangeResourceBy(1))
                 .AddTo(_collectDisposable);
 
+        }
+
+        private void CollectResources()
+        {
+            var collectedResources = _resourceModel.ResourceCount.Value;
+            _resourceModel.ChangeResourceBy(-collectedResources);
+            _resourcesService.GetModel(_resourceModel.ResourceType).ChangeResourceBy(collectedResources);
         }
 
         public void Dispose()

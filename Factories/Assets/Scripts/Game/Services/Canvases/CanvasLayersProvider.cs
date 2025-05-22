@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RotaryHeart.Lib.SerializableDictionaryPro;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace Game.Services.Canvases
     {
         [SerializeField] private Transform _canvasesRoot;
         [SerializeField] private List<CanvasLayer> _layersOrder;
+        [SerializeField] private SerializableDictionary<CanvasLayer, Canvas> _preCreatedCanvases;
         
         private IFactory<Canvas> _canvasFactory;
         private Dictionary<CanvasLayer, Canvas> _canvases;
@@ -16,10 +18,15 @@ namespace Game.Services.Canvases
         {
             _canvasFactory = canvasFactory;
             _canvases  = new Dictionary<CanvasLayer, Canvas>();
-            return;
+            
             for (var i = 0; i < _layersOrder.Count; i++)
             {
                 var layer = _layersOrder[i];
+                if (_preCreatedCanvases.ContainsKey(layer))
+                {
+                    _canvases.Add(layer, _preCreatedCanvases[layer]);
+                    return;
+                }
                 if (_canvases.ContainsKey(layer))
                 {
                     Debug.LogError($"{layer} duplicates in _layersOrder");

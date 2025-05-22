@@ -3,7 +3,7 @@ using Game.Core.UtilityInterfaces;
 
 namespace Game.Core.PlayerResourcess.ResourcFactories
 {
-    public interface IResourceCollectBuilding : IGameObjectModelRequier, ISpriteRequier
+    public interface IResourceCollectBuilding : IGameObjectModelRequier, ISpriteRequier, ITitleRequier
     {
 
         public IReadOnlyReactiveTrigger OnCollectResource { get; }

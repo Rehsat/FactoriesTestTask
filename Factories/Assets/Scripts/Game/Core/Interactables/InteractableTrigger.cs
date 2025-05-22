@@ -27,6 +27,7 @@ namespace Game.Core.Interactables
             {
                 if (enteredCollider.gameObject.TryGetComponent<IInteractCallbackReciever>(out var callbackReciever))
                 {
+                    _onInteracted.Notify();
                     callbackReciever.SendCallback(callbackOnTrigger);
                 }
             }))
@@ -35,7 +36,8 @@ namespace Game.Core.Interactables
 
         public void SetEnabled(bool isEnabled)
         {
-            _trigger.enabled = isEnabled;
+            Debug.LogError(isEnabled);
+            _trigger.gameObject.SetActive(isEnabled);
         }
 
         private void OnDestroy()

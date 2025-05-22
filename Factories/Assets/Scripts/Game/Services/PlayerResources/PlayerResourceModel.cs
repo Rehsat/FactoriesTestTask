@@ -10,10 +10,14 @@ namespace Game.Services.PlayerResources
 
         public Sprite Sprite { get; }
         public float SecondsToGain { get; }
+
+        public PlayerResource ResourceType => _resourceType;
+
         public IReadOnlyReactiveProperty<float> ResourceCount => _resourceCount;
 
-        public PlayerResourceModel(Sprite sprite)
+        public PlayerResourceModel(Sprite sprite, PlayerResource resourceType)
         {
+            _resourceType = resourceType;
             _resourceCount = new ReactiveProperty<float>();
             Sprite = sprite;
             SecondsToGain = Random.Range(0.8f, 5f);

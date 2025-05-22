@@ -10,6 +10,7 @@
         SausagesFactory = 5,
         TomatoesFactory = 6,
         ResourceFactoryView = 7,
+        Canvas = 8,
         
     }
 }

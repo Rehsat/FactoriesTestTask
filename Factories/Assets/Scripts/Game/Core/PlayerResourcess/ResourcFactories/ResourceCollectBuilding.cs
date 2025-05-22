@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using EasyFramework.ReactiveTriggers;
 using Game.Core.Interactables;
 using UniRx.Triggers;
@@ -22,13 +23,20 @@ namespace Game.Core.PlayerResourcess.ResourcFactories
         public void Construct()
         {
             _compositeDisposable = new CompositeDisposable();
-            
-            _interactableTrigger.Construct(InteractCallback.ResourceCollected);
+            _onResourceCollected = new ReactiveTrigger();
+
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            _interactableTrigger
+                .Construct(InteractCallback.ResourceCollected);
             
             _interactableTrigger.OnInteracted
                 .Subscribe((() =>
                 {
-                    _onResourceCollected = new ReactiveTrigger();
+                    _onResourceCollected.Notify();
                     _interactableTrigger.SetEnabled(false);
                 }))
                 .AddTo(_compositeDisposable);
@@ -48,10 +56,18 @@ namespace Game.Core.PlayerResourcess.ResourcFactories
         {
             _resourceUiView.SetSprite(sprite);
         }
+        
+        public void SetTitle(string title)
+        {
+            _resourceUiView.SetTitle(title);
+        }
 
         public void SetResourceViewCount(float resourceCount)
         {
             _resourceUiView.SetResourceCount(resourceCount);
+            
+            _resourceUiView.transform.DOKill();
+            _resourceUiView.transform.DOJumpAnimation(0.3f);
         }
 
         private void OnDestroy()

@@ -20,12 +20,8 @@ namespace Game.Core.Interactables
         private void PlayInteractAnimation()
         {
            transform.DOKill();
-           var startScale = transform.localScale;
-           transform
-               .DOScale(transform.localScale * 1.2f, _interactAnimationDurationSecondss)
-               .SetEase(Ease.OutCubic)
-               .SetLoops(2, LoopType.Yoyo)
-               .OnKill(() => transform.localScale = startScale);
+           transform.
+               DOJumpAnimation(_interactAnimationDurationSecondss);
         }
     }
 

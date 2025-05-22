@@ -18,9 +18,13 @@ namespace Game.Factories
         }
         public ResourceCollectBuildingPresenter Create(PlayerResource resource)
         {
-            var model = _resourcesService.GetModel(resource);
+            var globalResourceModel = _resourcesService.GetModel(resource);
+            var collector = new PlayerResourceModel(
+                globalResourceModel.Sprite
+                ,globalResourceModel.ResourceType); // по науке надо фабрику завести 
+            
             var view = _viewFactory.Create(resource);
-            return new ResourceCollectBuildingPresenter(model, view);
+            return new ResourceCollectBuildingPresenter(collector, view, _resourcesService);
         }
     }
 }

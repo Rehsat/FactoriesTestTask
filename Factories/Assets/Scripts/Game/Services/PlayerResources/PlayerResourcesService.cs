@@ -14,14 +14,16 @@ namespace Game.Services.PlayerResources
             _spriteByResourceTypeContainer = spriteByResourceTypeContainer;
             _playerResources = new Dictionary<PlayerResource, PlayerResourceModel>();
             foreach (PlayerResource resourceType in Enum.GetValues(typeof(PlayerResource)))
-                _playerResources.Add(resourceType, Create(resourceType));
+                InitResource(resourceType);
         }
 
-        private PlayerResourceModel Create(PlayerResource resource)
+        private void InitResource(PlayerResource resource)
         {
+            if(resource == PlayerResource.None) return;
+            
             var sprite = _spriteByResourceTypeContainer.GetSprite(resource);
-            var model = new PlayerResourceModel(sprite);
-            return model;
+            var model = new PlayerResourceModel(sprite, resource);
+            _playerResources.Add(resource, model);
         }
 
         public PlayerResourceModel GetModel(PlayerResource playerResource)

@@ -12,6 +12,7 @@ using Game.Services.Canvases;
 using Game.Services.Input;
 using Game.Services.PlayerResources;
 using Game.Services.RaycastService;
+using Game.UI.PopUps;
 using Infrastructure.StateMachine;
 using UnityEngine;
 using Zenject;
@@ -24,6 +25,7 @@ namespace Game
         [SerializeField] private CoroutineStarter _coroutineStarter;
         [SerializeField] private CameraService _cameraService;
         [SerializeField] private CanvasLayersProvider canvasLayersProvider;
+        [SerializeField] private PopUpsSpawner _popUpsSpawner;
         public override void InstallBindings()
         {
             InstallConfig(_config);
@@ -51,6 +53,7 @@ namespace Game
         {
             Container.Bind<IFactory<PlayerRoot>>().To<PlayerFactory>().FromNew().AsSingle();
             Container.Bind<IFactory<Canvas>>().To<CanvasFactory>().FromNew().AsSingle();
+            
             Container.Bind<IFactory<PlayerResource, IResourceCollectBuilding>>()
                 .To<ResourceViewFactory>().FromNew().AsSingle();
             Container.Bind<IFactory<PlayerResource, ResourceCollectBuildingPresenter>>()
@@ -61,6 +64,7 @@ namespace Game
         {
             Container.Bind<ICanvasLayersProvider>().To<CanvasLayersProvider>().FromInstance(canvasLayersProvider).AsSingle();
             Container.Bind<ICameraService>().To<CameraService>().FromInstance(_cameraService).AsSingle();
+            Container.Bind<IPopUpsSpawnService>().To<PopUpsSpawner>().FromInstance(_popUpsSpawner).AsSingle();
 
             Container.Bind<IPlayerResourcesService>().To<PlayerResourcesService>().FromNew().AsSingle();
             Container.Bind<IRaycastService>().To<RaycastService>().FromNew().AsSingle();
