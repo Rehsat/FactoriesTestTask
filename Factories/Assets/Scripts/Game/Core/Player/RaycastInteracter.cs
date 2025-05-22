@@ -39,6 +39,7 @@ namespace Game.Core.Player
             var raycastHit = _raycastService.DoRaycast(_inputService.PointerPosition);
             if(raycastHit.collider == null) return;
 
+            Debug.LogError(raycastHit.collider.gameObject.name);
             var hitPosition = raycastHit.point;
             _playerPointToMoveContainer.SetNewPoint(hitPosition);
             
