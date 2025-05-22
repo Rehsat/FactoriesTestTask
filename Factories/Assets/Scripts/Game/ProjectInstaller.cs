@@ -57,12 +57,12 @@ namespace Game
             
             Container.Bind<IRaycastService>().To<RaycastService>().FromNew().AsSingle();
             Container.Bind<IInputService>().To<InputService>().FromNew().AsSingle();
-            Container.Bind<IInteractService>().To<InteractService>().FromNew().AsSingle().NonLazy();
         }
 
         private void InstallPlayer()
         {
             Container.Bind<IWorldPointContainer>().To<PlayerMovementPointContainer>().FromNew().AsSingle();
+            Container.Bind<RaycastInteracter>().FromNew().AsSingle().NonLazy();
         }
 
         private void InstallStateMachine()

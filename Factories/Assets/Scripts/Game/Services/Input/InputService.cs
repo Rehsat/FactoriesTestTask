@@ -14,7 +14,7 @@ namespace Game.Services.Input
         private readonly ReactiveTrigger _onInputUpdate;
         private readonly CompositeDisposable _compositeDisposable;
 
-        public IReadOnlyReactiveEvent<ActionState> OnDragActionStateChanged => _onDragActionStateChanged;
+        public IReadOnlyReactiveEvent<ActionState> OnPressStateChanged => _onDragActionStateChanged;
         public IReadOnlyReactiveTrigger OnInputUpdate => _onInputUpdate;
         public Vector2 PointerPosition => Mouse.current.position.ReadValue();
         public Vector2 PointerDelta => Mouse.current.delta.ReadValue();

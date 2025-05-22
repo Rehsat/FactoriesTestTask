@@ -13,7 +13,7 @@ namespace Game.Services.RaycastService
             _inputService = inputService;
             _raycastService = raycastService;
             
-            _inputService.OnDragActionStateChanged.SubscribeWithSkip((state =>
+            _inputService.OnPressStateChanged.SubscribeWithSkip((state =>
             {
                 if (state == ActionState.Started)
                     Interact(inputService.PointerPosition);

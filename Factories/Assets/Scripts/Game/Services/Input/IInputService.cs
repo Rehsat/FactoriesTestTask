@@ -8,7 +8,7 @@ namespace Game.Services.Input
     {
         public Vector2 PointerPosition { get; }
         public Vector2 PointerDelta { get; }
-        public IReadOnlyReactiveEvent<ActionState> OnDragActionStateChanged { get; }
+        public IReadOnlyReactiveEvent<ActionState> OnPressStateChanged { get; }
         public IReadOnlyReactiveTrigger OnInputUpdate { get; }
     }
 }

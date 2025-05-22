@@ -12,19 +12,19 @@ namespace Game.Services.RaycastService
             _cameraService = cameraService;
         }
         
-        public RaycastHit2D DoRaycast(Vector2 screenPosition)
+        public RaycastHit DoRaycast(Vector2 screenPosition)
         {
             Ray ray = _cameraService.MainCamera.ScreenPointToRay(screenPosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+            Physics.Raycast(ray, out RaycastHit hit);
             return hit;
         }
 
         public bool TryGetComponentInRaycastHit<TComponent>(Vector2 screenPosition, out TComponent component)
         {
             var hit = DoRaycast(screenPosition);
-            
+        
             if (hit.collider != null &&
-                hit.collider.TryGetComponent<TComponent>(out component))
+                hit.collider.TryGetComponent(out component))
                 return true;
 
             component = default;
