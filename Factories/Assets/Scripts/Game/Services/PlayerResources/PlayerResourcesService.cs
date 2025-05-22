@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Infrastructure.Configs;
 
 namespace Game.Services.PlayerResources
@@ -29,6 +30,11 @@ namespace Game.Services.PlayerResources
         public PlayerResourceModel GetModel(PlayerResource playerResource)
         {
             return _playerResources[playerResource];
+        }
+
+        public List<PlayerResourceModel> GetAllModels()
+        {
+            return _playerResources.Values.ToList();
         }
     }
 }

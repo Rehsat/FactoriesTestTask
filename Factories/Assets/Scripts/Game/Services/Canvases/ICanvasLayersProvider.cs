@@ -6,5 +6,6 @@ namespace Game.Services.Canvases
     {
         public Canvas GetCanvasByLayer(CanvasLayer canvasLayer);
         public void SetCanvasLayer(CanvasLayer layer, Canvas canvas);
+        public void SetToCanvas(CanvasLayer layer, Transform transformToPlace);
     }
 }

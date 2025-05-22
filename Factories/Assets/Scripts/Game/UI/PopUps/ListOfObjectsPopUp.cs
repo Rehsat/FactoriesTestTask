@@ -9,10 +9,9 @@ namespace Game.UI.PopUps
     {
         [SerializeField] private LayoutGroup _layoutGroup;
 
-        public void Construct(List<RectTransform> objects)
+        public void Construct(List<Transform> objects)
         {
             objects.ForEach(ui => ui.transform.SetParent(_layoutGroup.transform));
-            _layoutGroup.UpdateGroup();
         }
 
     }

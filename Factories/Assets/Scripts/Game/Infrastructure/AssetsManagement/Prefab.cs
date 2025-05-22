@@ -11,6 +11,8 @@
         TomatoesFactory = 6,
         ResourceFactoryView = 7,
         Canvas = 8,
-        
+        ListOfObjectsPopUp = 9,
+        ResourceUiView = 10,
+        HUD = 11
     }
 }

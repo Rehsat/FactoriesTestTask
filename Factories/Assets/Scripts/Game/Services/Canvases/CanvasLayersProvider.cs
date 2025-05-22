@@ -58,5 +58,12 @@ namespace Game.Services.Canvases
             else
                 _canvases.Add(layer, canvas);
         }
+
+        public void SetToCanvas(CanvasLayer layer, Transform transformToPlace)
+        {
+            var canvas = GetCanvasByLayer(layer);
+            transformToPlace.SetParent(canvas.transform);
+            transformToPlace.localPosition = Vector3.zero;
+        }
     }
 }

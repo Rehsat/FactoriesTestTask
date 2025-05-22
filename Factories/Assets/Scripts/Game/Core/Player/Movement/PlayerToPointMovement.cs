@@ -21,7 +21,7 @@ namespace Game.Core.Player.Movement
             _isMoving = new ReactiveProperty<bool>(false);
             _compositeDisposable = new CompositeDisposable();
             worldPointContainer.CurrentPoint
-              //  .Skip(1)
+                .Skip(1)
                 .Subscribe(SetPointToMove)
                 .AddTo(_compositeDisposable);
         }

@@ -10,17 +10,19 @@ namespace Game.Services.Input
     public class InputService : IInputService, IDisposable
     {
         private readonly InputActions _inputActions;
-        private readonly ReactiveEvent<ActionState> _onDragActionStateChanged;
         private readonly ReactiveTrigger _onInputUpdate;
         private readonly CompositeDisposable _compositeDisposable;
-
+        private readonly ReactiveEvent<ActionState> _onDragActionStateChanged;
+        private readonly ReactiveProperty<Vector2> _currentMovement;
+        public IReadOnlyReactiveProperty<Vector2> CurrentMovement => _currentMovement;
         public IReadOnlyReactiveEvent<ActionState> OnPressStateChanged => _onDragActionStateChanged;
         public IReadOnlyReactiveTrigger OnInputUpdate => _onInputUpdate;
+
         public Vector2 PointerPosition => Mouse.current.position.ReadValue();
-        public Vector2 PointerDelta => Mouse.current.delta.ReadValue();
 
         public InputService()
         {
+            _currentMovement = new ReactiveProperty<Vector2>();
             _onDragActionStateChanged = new ReactiveEvent<ActionState>();
             _onInputUpdate = new ReactiveTrigger();
             _compositeDisposable = new CompositeDisposable();
@@ -33,10 +35,15 @@ namespace Game.Services.Input
 
             Observable
                 .EveryUpdate()
-                .Subscribe(f => _onInputUpdate.Notify())
+                .Subscribe(f =>
+                    _onInputUpdate.Notify())
                 .AddTo(_compositeDisposable);
         }
 
+        public void SetCurrentMovement(Vector2 movement)
+        {
+            _currentMovement.Value = movement;
+        }
         public void Dispose()
         {
             _compositeDisposable?.Dispose();

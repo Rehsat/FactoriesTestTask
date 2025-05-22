@@ -1,5 +1,6 @@
 using Game.Core.Player;
 using Game.Core.Player.Movement;
+using Game.Core.PlayerResourcess;
 using Game.Core.PlayerResourcess.ResourcFactories;
 using Game.Factories;
 using Game.Infrastructure;
@@ -53,6 +54,11 @@ namespace Game
         {
             Container.Bind<IFactory<PlayerRoot>>().To<PlayerFactory>().FromNew().AsSingle();
             Container.Bind<IFactory<Canvas>>().To<CanvasFactory>().FromNew().AsSingle();
+            Container.Bind<IFactory<ListOfObjectsPopUp>>().To<ListOfObjectsPopUpFactory>().FromNew().AsSingle();
+            Container.Bind<IFactory<ResourceUiView>>().To<ResourceUiViewFactory>().FromNew().AsSingle();
+            Container.Bind<IFactory<HUDView>>().To<HudFactory>().FromNew().AsSingle();
+            Container.Bind<IFactory<ResourcesPopUpPresenter>>().To<ListOfResourcesPresenterFactory>().FromNew()
+                .AsSingle();
             
             Container.Bind<IFactory<PlayerResource, IResourceCollectBuilding>>()
                 .To<ResourceViewFactory>().FromNew().AsSingle();

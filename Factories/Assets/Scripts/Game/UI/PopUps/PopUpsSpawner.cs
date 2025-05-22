@@ -38,8 +38,10 @@ namespace Game.UI.PopUps
                 return;
             }
             _popUps.Add(popUpType, popUp);
+            
             popUp.Construct(_onHide);
-            popUp.transform.parent = this.transform;
+            popUp.transform.SetParent(transform);
+            popUp.transform.localPosition = Vector3.zero;
             popUp.gameObject.SetActive(false);
             popUp.OnShowRequired
                 .SubscribeWithSkip(() => SpawnPopUp(popUpType))
