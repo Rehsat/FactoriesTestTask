@@ -36,7 +36,6 @@ namespace Game.Core.Interactables
 
         public void SetEnabled(bool isEnabled)
         {
-            Debug.LogError(isEnabled);
             _trigger.gameObject.SetActive(isEnabled);
         }
 

@@ -9,7 +9,7 @@ namespace Game.Services.Cameras
     public class CameraService : MonoBehaviour, ICameraService
     {
         [SerializeField] private float _cameraSpeed;
-            [SerializeField] private Camera _mainCamera;
+        [SerializeField] private Camera _mainCamera;
         public Camera MainCamera => _mainCamera;
 
         [Inject]

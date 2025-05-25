@@ -28,6 +28,7 @@ namespace Game.Core.Player
             _inputService.OnPressStateChanged
                 .SubscribeWithSkip(state =>
                 {
+                    Debug.Log(state);
                     if (state == ActionState.Started)
                         Raycast();
                 })
@@ -36,15 +37,20 @@ namespace Game.Core.Player
 
         private void Raycast()
         {
+            Debug.LogError(_inputService.PointerPosition);
+            Debug.LogError(_raycastService);
             var raycastHit = _raycastService.DoRaycast(_inputService.PointerPosition);
+            
+            Debug.LogError(raycastHit);
             if(raycastHit.collider == null) return;
 
-            Debug.LogError(raycastHit.collider.gameObject.name);
             var hitPosition = raycastHit.point;
+            Debug.LogError(raycastHit.point);
             _playerPointToMoveContainer.SetNewPoint(hitPosition);
             
             if(raycastHit.collider.gameObject.TryGetComponent<IInteractable>(out var interactable))
                 interactable.Interact();
+            Debug.LogError("catt");
         }
 
         public void Dispose()

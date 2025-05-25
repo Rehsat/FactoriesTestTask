@@ -8,6 +8,6 @@ namespace Game.Infrastructure.CurrentLevelData
     public class HUDView : MonoBehaviour
     {
         [field: SerializeField] public Button ResourcesPopUpButton { get; private set; }
-        [field: SerializeField] public List<Transform> FactoriesSpawnPoints { get; private set; }
+        [field: SerializeField] public Button SettingsPopUpButton { get; private set; }
     }
 }

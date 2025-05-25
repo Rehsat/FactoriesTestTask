@@ -12,7 +12,6 @@ namespace Game.Core.Interactables
 
         public void Interact()
         {
-            Debug.LogError(123);
             PlayInteractAnimation();
             _onInteract.Notify();
         }

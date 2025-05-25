@@ -42,6 +42,7 @@ namespace Game.UI.PopUps
             popUp.Construct(_onHide);
             popUp.transform.SetParent(transform);
             popUp.transform.localPosition = Vector3.zero;
+            popUp.GetComponent<RectTransform>().ForceUpdateRectTransforms();
             popUp.gameObject.SetActive(false);
             popUp.OnShowRequired
                 .SubscribeWithSkip(() => SpawnPopUp(popUpType))
@@ -71,6 +72,7 @@ namespace Game.UI.PopUps
     }
     public enum PopUpType
     {
-        ResourcesCount
+        ResourcesCount =0,
+        VolumeChange
     }
 }

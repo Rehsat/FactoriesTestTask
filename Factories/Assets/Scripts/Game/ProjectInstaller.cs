@@ -1,3 +1,4 @@
+using System;
 using Game.Core.Player;
 using Game.Core.Player.Movement;
 using Game.Core.PlayerResourcess;
@@ -8,13 +9,16 @@ using Game.Infrastructure.AssetsManagement;
 using Game.Infrastructure.Configs;
 using Game.Infrastructure.CurrentLevelData;
 using Game.Infrastructure.StateMachine.GameStates;
+using Game.Services.Audio;
 using Game.Services.Cameras;
 using Game.Services.Canvases;
 using Game.Services.Input;
 using Game.Services.PlayerResources;
 using Game.Services.RaycastService;
+using Game.Services.Save;
 using Game.UI.PopUps;
 using Infrastructure.StateMachine;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -27,6 +31,7 @@ namespace Game
         [SerializeField] private CameraService _cameraService;
         [SerializeField] private CanvasLayersProvider canvasLayersProvider;
         [SerializeField] private PopUpsSpawner _popUpsSpawner;
+
         public override void InstallBindings()
         {
             InstallConfig(_config);
@@ -36,6 +41,7 @@ namespace Game
             InstallPlayer();
             InstallStateMachine();
         }
+
         private void InstallConfig(IGameConfig gameConfig)
         {
             Container.Bind<IPrefabsProvider>().FromInstance(gameConfig.PrefabsProvider).AsSingle();
@@ -75,6 +81,10 @@ namespace Game
             Container.Bind<IPlayerResourcesService>().To<PlayerResourcesService>().FromNew().AsSingle();
             Container.Bind<IRaycastService>().To<RaycastService>().FromNew().AsSingle();
             Container.Bind<IInputService>().To<InputService>().FromNew().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<AudioService>().FromNew().AsSingle();
+            Container.Bind<IDataSerializer>().To<JsonDataSerializer>().FromNew().AsSingle();
+            Container.Bind<ISaveService>().To<SaveService>().FromNew().AsSingle();
         }
 
         private void InstallPlayer()

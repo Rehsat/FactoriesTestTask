@@ -5,6 +5,7 @@ using Game.Core.PlayerResourcess.ResourcFactories;
 using Game.Infrastructure.CurrentLevelData;
 using Game.Services.Canvases;
 using Game.Services.PlayerResources;
+using Game.UI.PopUps;
 using Infrastructure.StateMachine;
 using UnityEngine;
 using Zenject;
@@ -16,12 +17,14 @@ namespace Game.Infrastructure.StateMachine.GameStates
         private readonly IFactory<PlayerResource, ResourceCollectBuildingPresenter> _resourceCollectorsFactory;
         private readonly IFactory<HUDView> _hudViewFactory;
         private readonly ICanvasLayersProvider _canvasLayersProvider;
+        private readonly IPopUpsSpawnService _popUpsSpawner;
         private readonly Dictionary<PlayerResource, ResourceCollectBuildingPresenter> _resourceCollectorPresenters;
         
         private readonly ICurrentLevelDataProvider _levelDataProvider;
         private readonly IFactory<PlayerRoot> _playerFactory;
         private readonly IFactory<ResourcesPopUpPresenter> _resourcesListPresenterFactory;
 
+        private HUDView _levelButtons;
         private ResourcesPopUpPresenter _resourcesPopUpPresenter;
 
         public ResourceCollectState(
@@ -29,28 +32,30 @@ namespace Game.Infrastructure.StateMachine.GameStates
             IFactory<PlayerRoot> playerFactory,
             IFactory<ResourcesPopUpPresenter> resourcesListPresenterFactory,
             IFactory<PlayerResource, ResourceCollectBuildingPresenter> resourceCollectorsFactory,
-            IFactory<HUDView> hudViewFactory,
-            ICanvasLayersProvider canvasLayersProvider)
+            ICanvasLayersProvider canvasLayersProvider,
+            IPopUpsSpawnService popUpsSpawner)
         {
             _levelDataProvider = levelDataProvider;
             _playerFactory = playerFactory;
             _resourcesListPresenterFactory = resourcesListPresenterFactory;
             _resourceCollectorsFactory = resourceCollectorsFactory;
-            _hudViewFactory = hudViewFactory;
             _canvasLayersProvider = canvasLayersProvider;
+            _popUpsSpawner = popUpsSpawner;
             _resourceCollectorPresenters = new Dictionary<PlayerResource, ResourceCollectBuildingPresenter>();
         }
         
         public void Enter()
         {
-            var hud = _hudViewFactory.Create();
-            _canvasLayersProvider.SetToCanvas(CanvasLayer.Hud, hud.transform);
+            _levelButtons = _levelDataProvider.CurrentLevelData.LevelButtons;
+            _canvasLayersProvider.SetToCanvas(CanvasLayer.Hud, _levelButtons.transform);
             
             _playerFactory.Create().transform.position = 
                 _levelDataProvider.CurrentLevelData.PlayerSpawnPosition.position;
             _resourcesPopUpPresenter = _resourcesListPresenterFactory.Create();
             
-            hud.ResourcesPopUpButton.onClick.AddListener(_resourcesPopUpPresenter.ShowPopUp);
+            _levelButtons.ResourcesPopUpButton.onClick.AddListener(_resourcesPopUpPresenter.ShowPopUp);
+            _levelButtons.SettingsPopUpButton.onClick.AddListener((() => 
+                _popUpsSpawner.SpawnPopUp(PopUpType.VolumeChange)));
                 
                 
             // заглушка для алгоритма спавна производящих зданий
@@ -58,7 +63,6 @@ namespace Game.Infrastructure.StateMachine.GameStates
             var counter = 1; 
             _levelDataProvider.CurrentLevelData.FactoriesSpawnPoints.ForEach(spawnPoint =>
             {
-                Debug.LogError(counter);
                 var resource = (PlayerResource)counter;
                 var presenter = _resourceCollectorsFactory.Create(resource);
                 
@@ -72,8 +76,8 @@ namespace Game.Infrastructure.StateMachine.GameStates
 
         public void Exit()
         {
-            _levelDataProvider.CurrentLevelData.HudView.
-                ResourcesPopUpButton.gameObject.SetActive(false);
+            _levelButtons.ResourcesPopUpButton.onClick.RemoveAllListeners();
+            _levelButtons.SettingsPopUpButton.onClick.RemoveAllListeners();
         }
 
         public void SetStateMachine(GameStateMachine stateMachine)
